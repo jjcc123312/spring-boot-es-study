@@ -53,6 +53,18 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-all</artifactId>
+      <version>5.8.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.70</version>
+    </dependency>
+
   </dependencies>
 
   <modules>
