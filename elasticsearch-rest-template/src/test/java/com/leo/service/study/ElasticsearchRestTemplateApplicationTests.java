@@ -18,9 +18,6 @@ class ElasticsearchRestTemplateApplicationTests {
 
     @Test
     public void findById() {
-        System.out.println();
-
-
         Product product = elasticsearchRestTemplate.get("HzwfMIUBnhBSI8p_vYdc", Product.class);
         log.info("product:{}", product);
     }

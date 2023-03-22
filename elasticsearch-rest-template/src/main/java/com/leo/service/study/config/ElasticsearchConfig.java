@@ -24,8 +24,8 @@ public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
     @Bean
     public RestHighLevelClient elasticsearchClient() {
         RestClientBuilder builder = RestClient.builder(new HttpHost(host, port));
-        RestHighLevelClient restHighLevelClient = new
-                RestHighLevelClient(builder);
+        RestHighLevelClient restHighLevelClient = new RestHighLevelClient(builder);
+
         return restHighLevelClient;
     }
 }
