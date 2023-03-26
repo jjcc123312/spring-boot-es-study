@@ -1,5 +1,6 @@
 package com.leo.service.study.config;
 
+import java.net.InetSocketAddress;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.http.HttpHost;
@@ -9,6 +10,8 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.client.ClientConfiguration;
+import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
 
 @EqualsAndHashCode(callSuper = true)
@@ -21,11 +24,15 @@ public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
     private Integer port;
     //重写父类方法
     @Override
-    @Bean
+    @Bean(destroyMethod = "close")
     public RestHighLevelClient elasticsearchClient() {
-        RestClientBuilder builder = RestClient.builder(new HttpHost(host, port));
-        RestHighLevelClient restHighLevelClient = new RestHighLevelClient(builder);
+        InetSocketAddress inetSocketAddress = new InetSocketAddress(host, port);
 
-        return restHighLevelClient;
+        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+            .connectedTo(inetSocketAddress)
+            .build();
+
+        return RestClients.create(clientConfiguration).rest();
+
     }
 }

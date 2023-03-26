@@ -45,6 +45,7 @@ public class IndexOperationsTests {
         commonIndexCreate(Headmaster.class);
         commonIndexCreate(Teacher.class);
     }
+
     private <T> void commonIndexCreate(Class<T> tClass) {
         IndexOperations indexOperations = elasticsearchRestTemplate.indexOps(tClass);
         // 创建索引
@@ -58,7 +59,6 @@ public class IndexOperationsTests {
         log.info("创建索引及mapping结果:{}", b && b1);
     }
 
-
     /**
      * 删除索引
      * @author Leo
@@ -71,6 +71,10 @@ public class IndexOperationsTests {
         log.info("删除索引结果：{}", delete);
     }
 
+    /**
+     * 查看索引信息
+     * @author Leo
+     */
     @Test
     public void searchIndexInfo() {
         IndexCoordinates of = IndexCoordinates.of("student_new1");

@@ -8,3 +8,4 @@ elasticsearch:
 logging:
   level:
     com.leo.service: debug
+    org.springframework.data.elasticsearch.client.WIRE: trace
