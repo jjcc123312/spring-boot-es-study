@@ -184,7 +184,34 @@ public class DocumentSimpleOperationsTests {
         log.info("search result:{}", JSONObject.toJSONString(search));
     }
 
+    /**
+     * 根据主键id查询文档
+     * @author Leo
+     */
+    @Test
+    public void queryById() {
+        Teacher teacher = elasticsearchRestTemplate.get("1", Teacher.class);
+        log.info("query result: {}", teacher);
+    }
+
+    /**
+     * 文档是否存在
+     * @author Leo
+     */
+    @Test
+    public void documentExist() {
+        String tId = "1";
+        boolean exists = elasticsearchRestTemplate.exists(tId, Teacher.class);
+        log.info("文档id:{}存在结果:{}", tId, exists);
+    }
+
+
 }
+
+
+
+
+
 
 
 
