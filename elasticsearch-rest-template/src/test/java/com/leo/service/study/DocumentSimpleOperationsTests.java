@@ -1,8 +1,3 @@
-/*
- * Copyright(c) 2022 长沙市希尚网络科技有限公司
- * 注意：本内容仅限于长沙市希尚网络科技有限公司内部传阅，禁止外泄以及用于其他的商业目的
- */
-
 package com.leo.service.study;
 
 import cn.hutool.core.bean.BeanUtil;
@@ -10,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.leo.service.study.elasticsearch.domain.Headmaster;
 import com.leo.service.study.elasticsearch.domain.Student;
 import com.leo.service.study.elasticsearch.domain.Teacher;
+import java.lang.annotation.Native;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -37,7 +33,7 @@ import org.springframework.data.elasticsearch.core.query.UpdateResponse;
 import org.springframework.data.elasticsearch.core.suggest.Completion;
 
 /**
- * TODO
+ * es 索引文档简单 curd
  *
  * @author Leo
  * @version 1.0 2023/3/23
@@ -203,6 +199,18 @@ public class DocumentSimpleOperationsTests {
         String tId = "1";
         boolean exists = elasticsearchRestTemplate.exists(tId, Teacher.class);
         log.info("文档id:{}存在结果:{}", tId, exists);
+    }
+
+    /**
+     * 索引中文档总数
+     * @author Leo
+     */
+    @Test
+    public void documentCount() {
+        NativeSearchQuery build = new NativeSearchQueryBuilder()
+            .build();
+        long count = elasticsearchRestTemplate.count(build, Teacher.class);
+        log.info("index document size:{}", count);
     }
 
 
