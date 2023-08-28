@@ -1,5 +1,6 @@
 package com.leo.service.study.elasticsearch.domain;
 
+import java.time.LocalDateTime;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -30,4 +31,6 @@ public class TestIndexObject {
     private String alias;
 
     private String age;
+
+    private LocalDateTime presellDeliverTime;
 }

@@ -2,7 +2,12 @@ package com.leo.service.study;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.leo.service.study.elasticsearch.domain.Product;
+import com.leo.service.study.elasticsearch.domain.Student;
 import com.leo.service.study.elasticsearch.domain.Teacher;
+import com.leo.service.study.elasticsearch.domain.TestIndexObject;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +27,10 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.RegexpQueryBuilder;
+import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.WildcardQueryBuilder;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
@@ -32,8 +39,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.SearchHitsIterator;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.FetchSourceFilterBuilder;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
@@ -316,6 +325,27 @@ public class DocumentQueryOperationsTests {
         queryStringQuery(fieldMap, queryString, "ik_smart", Operator.OR, Teacher.class);
 
         QueryBuilders.multiMatchQuery("blue是山西省的", "tAddress", "tEnglishName");
+    }
+
+
+    /**
+     * 深度分页 by scroll
+     * @author Leo
+     */
+    @Test
+    public void scrollSearch() {
+        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+            .withPageable(PageRequest.of(0, 1))
+            .build();
+        // 深度分页有效期
+        searchQuery.setScrollTime(Duration.ofMinutes(1));
+
+        SearchHitsIterator<Product> studentSearchHitsIterator = elasticsearchRestTemplate.searchForStream(searchQuery,
+            Product.class);
+
+        List<SearchHit<Product>> collect = studentSearchHitsIterator.stream().collect(Collectors.toList());
+        log.info("scroll search result:{}", JSONObject.toJSONString(collect));
+
     }
 
 
